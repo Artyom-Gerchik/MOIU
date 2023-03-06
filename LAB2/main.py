@@ -5,6 +5,8 @@
 import numpy
 
 # initial data
+import lab1_help
+
 A = numpy.array([[-1, 1, 1, 0, 0], [1, 0, 0, 1, 0], [0, 1, 0, 0, 1]])
 C_with_T = numpy.array([1, 1, 0, 0, 0])
 X_with_T = numpy.array([0, 0, 1, 3, 2])
@@ -19,13 +21,14 @@ TRIANGLE_T = numpy.zeros(C_with_T)
 j_0 = 0  # index of first negativ on triangle_t
 z = numpy.zeros(len(A))
 TETHA = numpy.zeros(len(z))
-TETHA_MIN_INDEX = 0;
+TETHA_MIN_INDEX = 0
 TETHA_MIN = 0
 
 
 def main():
     for iteration in range(0, 100):
-        print(iteration + 1, 'ITERATION')
+        print()
+        print('ITERATION', iteration + 1, 'ITERATION')
         print('****************FIRST STEP****************')
 
         for index in range(len(A)):
@@ -39,7 +42,18 @@ def main():
 
         print('****************SECOND STEP***************')
 
-        A_B_INV = numpy.linalg.inv(A_B)
+        if iteration == 0:
+
+            A_B_INV = numpy.linalg.inv(A_B)
+        else:
+            tmp = numpy.zeros(B.size)
+
+            for index in range(0, B.size):
+                tmp[index] = A_B[index][TETHA_MIN_INDEX]
+
+            A_B_INV = lab1_help.func_for_lab2(A_B_INV, tmp,
+                                              TETHA_MIN_INDEX + 1,
+                                              B.size)  # j_0 + 1 because in lab1 all indexes are substructed by 1
 
         print('A_B_INV =\n', A_B_INV)
 
@@ -148,8 +162,9 @@ def main():
         print('NEW X_with_T IS: ', X_with_T)
 
         print('****************NINTH STEP****************')
-
-        # return
+        print()
+        print('ITERATION', iteration + 1, 'ITERATION')
+        print()
 
 
 if __name__ == '__main__':
