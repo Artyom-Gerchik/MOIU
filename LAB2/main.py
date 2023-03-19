@@ -7,17 +7,17 @@ import numpy
 # initial data
 import lab1_help
 
-A = numpy.array([[-1, 1, 1, 0, 0], [1, 0, 0, 1, 0], [0, 1, 0, 0, 1]])
-C_with_T = numpy.array([1, 1, 0, 0, 0])
-X_with_T = numpy.array([0, 0, 1, 3, 2])
-B = numpy.array([2, 3, 4])  # LESS BY 1 BECAUSE ZERO-BASED ARRAYS (in task = 3,4,5)
+A = numpy.array([[1, 1, 1, 1, 0], [2, 2, 2, 0, 1]])
+C_with_T = numpy.array([0, 0, 0, -1, -1])
+X_with_T = numpy.array([0, 0, 0, 0, 0])
+B = numpy.array([3, 4])  # LESS BY 1 BECAUSE ZERO-BASED ARRAYS (in task = 3,4,5)
 # initial data
 
 A_B = numpy.zeros((B.size, B.size))
 A_B_INV = numpy.zeros((B.size, B.size))
 C_T_B = numpy.zeros(B.size)
 U_T = numpy.zeros(C_T_B.size)
-TRIANGLE_T = numpy.zeros(C_with_T)
+#TRIANGLE_T = numpy.zeros(C_with_T)
 j_0 = 0  # index of first negativ on triangle_t
 z = numpy.zeros(len(A))
 TETHA = numpy.zeros(len(z))
@@ -115,7 +115,7 @@ def main():
 
         print('****************SEVENTH STEP**************')
 
-        tmp = numpy.zeros(3)
+        tmp = numpy.zeros(2)
 
         for index in range(0, len(A)):
             tmp[index] = A[index][j_0]
