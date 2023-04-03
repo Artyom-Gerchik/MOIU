@@ -122,13 +122,19 @@ def main(c, A, b):
 
 
 if __name__ == '__main__':
-    c = numpy.array([1, 0, 0])  # from pdf
-    A = numpy.array([[1, 1, 1], [2, 2, 2]])  # from pdf
-    b = numpy.array([0, 0])  # from pdf
+    c = numpy.array([1, 0, 0])  # from pdf vector stoimostei
+    A = numpy.array([[1, 1, 1], [2, 2, 2]])  # from pdf matrix ogranicheniy
+    b = numpy.array([-10, 0])  # from pdf vector of right chastei
 
     answer = main(c, A, b)
 
+    print('')
+    print('')
+    print('ANSWER')
+    print('')
     print(f'x_with_T = {answer[0]}')
     print(f'B = {answer[1]}')
     print(f'A = {answer[2]}')
     print(f'b = {answer[3]}')
+    print('')
+    print('')
