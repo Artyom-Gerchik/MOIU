@@ -19,16 +19,16 @@ def place_marks_on_B(B, basis):
 def pontetial_method(a, b, c):
     print('--------------- CHECK STEP ---------------')
 
-    difference = numpy.sum(a) - numpy.sum(b);
+    difference = numpy.sum(a) - numpy.sum(b)
 
     if difference > 0:
         b = numpy.append(b, difference)
-        c = numpy.append(c, 0)
+        c = numpy.hstack((c, numpy.zeros((len(a), 1))))
         print('MODIFIED B')
 
     elif difference < 0:
-        a = numpy.append(a, difference)
-        c = numpy.append(c, 0)
+        a = numpy.append(a, -difference)
+        c = numpy.vstack((c, numpy.zeros((len(a), 1))))
         print('MODIFIED A')
 
     print('--------------- CHECK STEP ---------------')

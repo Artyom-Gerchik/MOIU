@@ -49,7 +49,7 @@ def quadratic_programming(x_with_T, J_with_b, J_with_b_with_star, A, D, c):
 
         if det == 0:
             print('H DET IS 0')
-            return 
+            return
 
         x_vector = (numpy.dot(numpy.dot(-1, numpy.linalg.inv(H)), b_with_star))
 
