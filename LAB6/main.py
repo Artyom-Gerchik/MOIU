@@ -4,30 +4,30 @@ import numpy
 def quadratic_programming(x_with_T, J_with_b, J_with_b_with_star, A, D, c):
     iteration = 0
 
+    A_B = A[:, J_with_b]
+
     while True:
         iteration += 1
 
         print(f'\n{iteration} ITERATION')
 
-        A_B = A[:, J_with_b]
         c_x = c + numpy.dot(D, x_with_T)
         c_B = c_x[J_with_b]
-        u_x_transposed = numpy.transpose(numpy.dot(-numpy.transpose(c_B), numpy.linalg.inv(A_B)))
-        delta_x = numpy.transpose(numpy.dot(u_x_transposed, A) + numpy.transpose(c_x))
+        u_x_transposed = numpy.dot(-numpy.transpose(c_B), numpy.linalg.inv(A_B))
+        delta_x = numpy.dot(u_x_transposed, A) + numpy.transpose(c_x)
 
-        optimal_plan = False
-        tmp = 0
+        optimal_plan = True
+        j_0 = 0
 
         for i in range(len(delta_x)):
             if delta_x[i] < 0:
-                optimal_plan = True
-            else:
-                tmp += 1
-        if optimal_plan and tmp == 0:
+                optimal_plan = False
+                j_0 = i
+                break
+
+        if optimal_plan and iteration != 1:
             print(f'optimal plan x is: {x_with_T}\n')
             return
-
-        j_0 = i - 1
 
         l = numpy.zeros((len(x_with_T)))
         l[j_0] = 1
@@ -41,11 +41,11 @@ def quadratic_programming(x_with_T, J_with_b, J_with_b_with_star, A, D, c):
         H[:A_B_with_star.shape[1], len(D_with_star):] = numpy.transpose(A_B_with_star)
         H[len(D_with_star):, :A_B_with_star.shape[1]] = A_B_with_star
 
-        b_with_star = numpy.zeros((len(J_with_b_with_star) + len(A)))
-        b_with_star[:len(J_with_b_with_star)] = D[J_with_b_with_star, j_0]
-        b_with_star[len(J_with_b_with_star):] = A[:, j_0]
+        b_with_star = numpy.hstack((D[:, j_0][J_with_b_with_star], A[:, j_0]))
 
         det = numpy.linalg.det(H)
+
+        print(f'H is: \n {H}')
 
         if det == 0:
             print('H DET IS 0')
@@ -59,7 +59,7 @@ def quadratic_programming(x_with_T, J_with_b, J_with_b_with_star, A, D, c):
                 l[i] = x_vector[counter]
                 counter += 1
 
-        tettas = numpy.zeros((len(x_with_T)))
+        tettas = [999] * 20
         sigma = numpy.dot(numpy.dot(numpy.transpose(l), D), l)
 
         if sigma > 0:
@@ -73,7 +73,11 @@ def quadratic_programming(x_with_T, J_with_b, J_with_b_with_star, A, D, c):
             else:
                 tettas[index] = numpy.inf
 
-        tettas = tettas[:-1]
+        for i in range(len(tettas)):
+            try:
+                tettas.remove(999)
+            except:
+                break
 
         tetta_0 = min(tettas)
 
@@ -81,7 +85,7 @@ def quadratic_programming(x_with_T, J_with_b, J_with_b_with_star, A, D, c):
             print(f'tetta_0 is : {tetta_0}')
             return
 
-        index_to_remember_in_tettas = tettas.tolist().index(tetta_0)
+        index_to_remember_in_tettas = tettas.index(tetta_0)
 
         x_with_T = x_with_T + numpy.dot(tetta_0, l)
 
